@@ -47,14 +47,15 @@ class Pzem_004():
         return {k:p.read_parameter(k) for k in SERIAL_COMMANDS.keys()}
 
     def send(self, command: bytes, read_len=7):
-        uart.write(command)
-        sleep(0.1)
-        res = uart.read(read_len)
-        assert validate_checksum(res)
+        self.uart.write(command)
+        sleep(0.05)
+        res = self.uart.read(read_len)
+        assert self.validate_checksum(res)
 
         return res
 
 if __name__ == '__main__':
     # read all parameters from serial
     p = Pzem_004()
+    p.open()
     print(p.read_all())
