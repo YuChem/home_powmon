@@ -44,7 +44,7 @@ class Pzem_004():
         return calc(self.send(command))
 
     def read_all(self):
-        return {k:p.read_parameter(k) for k in SERIAL_COMMANDS.keys()}
+        return {k:self.read_parameter(k) for k in SERIAL_COMMANDS.keys()}
 
     def send(self, command: bytes, read_len=7):
         self.uart.write(command)
