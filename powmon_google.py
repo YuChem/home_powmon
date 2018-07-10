@@ -70,7 +70,7 @@ def error_str(rc):
     return '{}: {}'.format(rc, mqtt.error_string(rc))
 
 def on_connect(unused_client, unused_userdata, unused_flags, rc):
-    print('on_connect', mqtt.connack_string(rc))
+    print(dt.now(), ': on_connect', mqtt.connack_string(rc))
 
     # After a successful connect, reset backoff time and stop backing off.
     global should_backoff
@@ -79,20 +79,19 @@ def on_connect(unused_client, unused_userdata, unused_flags, rc):
     minimum_backoff_time = 1
 
 def on_disconnect(unused_client, unused_userdata, rc):
-    print('on_disconnect', error_str(rc))
+    print(dt.now(), ': on_disconnect', error_str(rc))
 
     global should_backoff
     should_backoff = True
 
 
 def on_publish(unused_client, unused_userdata, unused_mid):
-    print('on_publish')
+    print(dt.now(), ': ack')
 
 
 def on_message(unused_client, unused_userdata, message):
     payload = str(message.payload)
-    print('Received message \'{}\' on topic \'{}\' with Qos {}'.format(
-            payload, message.topic, str(message.qos)))
+    print(dt.now(), ': Received message \'{}\' on topic \'{}\' with Qos {}'.format(payload, message.topic, str(message.qos)))
 
 
 def get_client(project_id, 
@@ -215,7 +214,7 @@ def main():
         # Publish "payload" to the MQTT topic. qos=1 means at least once
         # delivery. Cloud IoT Core also supports qos=0 for at most once
         # delivery.
-        client.publish(mqtt_topic, payload, qos=1)
+        client.publish(mqtt_topic, payload, qos=0)
 
         # Send events every second. State should not be updated as often
         time.sleep(10 if args.message_type == 'event' else 5)
