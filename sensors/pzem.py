@@ -19,7 +19,7 @@ if (sensor.IsReady()):
 '''
 SERIAL_COMMANDS = {
     'V':  (b'\xB0\xC0\xA8\x01\x01\x00\x1A', lambda b: b[2] + b[3] / 10.0),
-    'A':  (b'\xB1\xC0\xA8\x01\x01\x00\x1B', lambda b: b[2] + b[3] / 100.0),
+    'A':  (b'\xB1\xC0\xA8\x01\x01\x00\x1B', lambda b: round(b[2] + b[3] / 100.0, 2)),
     'W':  (b'\xB2\xC0\xA8\x01\x01\x00\x1C', lambda b: b[1] * 2**8 + b[2]),
     'Wh': (b'\xB3\xC0\xA8\x01\x01\x00\x1D', lambda b: b[1] * 2**16 + b[2] * 2**8 + b[3])
 }
