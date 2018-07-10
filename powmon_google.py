@@ -1,7 +1,5 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
 
-# Copyright 2017 Google Inc.
-#
 # based on https://github.com/GoogleCloudPlatform/python-docs-samples/tree/master/iot/api-client/mqtt_example
 
 """Python sample for connecting to Google Cloud IoT Core via MQTT, using JWT.
@@ -19,8 +17,9 @@ import time
 import jwt
 import paho.mqtt.client as mqtt
 
-ISO_FORMAT="%Y-%m-%dT%H:%M:%S%z"
-SAMPLE_JSON = '{"phase":"L","V":240.2,"A":5.45, "W":1000.1, "KWh":345.6,"collected":"%s"}'
+from sensors.pzem import Pzem_004
+
+JSON_TEMPLATE = '{{"phase":"L","V":{V},"A":{A}, "W":{W}, "KWh":{Wh},"collected":"{ts}"}}'
 
 # The initial backoff time after a disconnection occurs, in seconds.
 minimum_backoff_time = 1
@@ -175,6 +174,9 @@ def main():
                         args.private_key_file, args.algorithm, args.ca_certs,
                         args.mqtt_bridge_hostname, args.mqtt_bridge_port)
 
+    p = Pzem_004()
+    p.open()
+
     # Publish num_messages mesages to the MQTT bridge once per second.
     for i in range(1, args.num_messages + 1):
         # Process network events.
@@ -194,10 +196,11 @@ def main():
             minimum_backoff_time *= 2
             client.connect(args.mqtt_bridge_hostname, args.mqtt_bridge_port)
 
-        now = dt.now(timezone.utc).replace(microsecond=0).isoformat()[:-6] + 'Z'
-        payload = SAMPLE_JSON % now
+        data = p.read_all()
+        data['ts'] = dt.now(timezone.utc).replace(microsecond=0).isoformat()[:-6] + 'Z'
+        payload = JSON_TEMPLATE.format(**data)
 
-        print('Publishing message: ', payload)
+        print(dt.now(), ': ', payload)
 
         # JWT refresh
         seconds_since_issue = (dt.utcnow() - jwt_iat).seconds
@@ -215,7 +218,7 @@ def main():
         client.publish(mqtt_topic, payload, qos=1)
 
         # Send events every second. State should not be updated as often
-        time.sleep(1 if args.message_type == 'event' else 5)
+        time.sleep(10 if args.message_type == 'event' else 5)
 
     print('Finished.')
 

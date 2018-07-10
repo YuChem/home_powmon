@@ -8,7 +8,7 @@
 from datetime import datetime as dt
 import requests
 from sensors.pzem import Pzem_004
-EMONCMS_URL = "http://192.168.1.19/emoncms/input/post?node=main&json={{current:{A},voltage:{V},power:{W},energy:{Wh}}}"
+EMONCMS_URL = "http://localhost/emoncms/input/post?node=main&json={{current:{A},voltage:{V},power:{W},energy:{Wh}}}"
 
 if __name__ == "__main__":
     p = Pzem_004()
