@@ -15,7 +15,7 @@ import time
 
 import paho.mqtt.client as mqtt
 
-#from sensors.pzem import Pzem_004
+from sensors.pzem import Pzem_004
 
 JSON_TEMPLATE = '{{"phase":"L","V":{V},"A":{A}, "W":{W}, "KWh":{Wh},"collected":"{ts}"}}'
 
@@ -104,11 +104,12 @@ def main():
     args = parse_command_line_args()
 
     mqtt_topic = '/devices/{}/state'.format(args.device_id)
+    print("publishing topic: %s" % mqtt_topic)
 
     client = get_client(args.device_id, args.mqtt_bridge_hostname, args.mqtt_bridge_port)
 
-    #p = Pzem_004()
-    #p.open()
+    p = Pzem_004()
+    p.open()
 
     # Publish num_messages mesages to the MQTT bridge once per second.
     for i in range(1, args.num_messages + 1):
@@ -141,7 +142,7 @@ def main():
         client.publish(mqtt_topic, payload, qos=0)
 
         # Send events every second. State should not be updated as often
-        time.sleep(10 if args.message_type == 'event' else 5)
+        time.sleep(10)
 
     print('Finished.')
 

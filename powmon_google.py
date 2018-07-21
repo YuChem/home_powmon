@@ -204,7 +204,7 @@ def main():
         # JWT refresh
         seconds_since_issue = (dt.utcnow() - jwt_iat).seconds
         if seconds_since_issue > 60 * jwt_exp_mins:
-            print('Refreshing token after {}s').format(seconds_since_issue)
+            print('Refreshing token after {}s'.format(seconds_since_issue))
             jwt_iat = dt.utcnow()
             client = get_client(args.project_id, args.cloud_region,
                                 args.registry_id, args.device_id, args.private_key_file,
