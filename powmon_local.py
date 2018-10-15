@@ -17,7 +17,7 @@ import paho.mqtt.client as mqtt
 
 from sensors.pzem import Pzem_004
 
-JSON_TEMPLATE = '{{"phase":"L","V":{V},"A":{A}, "W":{W}, "KWh":{Wh},"collected":"{ts}"}}'
+JSON_TEMPLATE = '{{"phase":"L","V":{V},"A":{A}, "KW":{KW}, "KWh":{KWh},"collected":"{ts}"}}'
 
 # The initial backoff time after a disconnection occurs, in seconds.
 minimum_backoff_time = 1
@@ -91,7 +91,6 @@ def parse_command_line_args():
     """Parse command line arguments."""
     parser = argparse.ArgumentParser(description=('Power monitor MQTT basic client.'))
     parser.add_argument('--device_id', required=True, help='Cloud IoT Core device id')
-    parser.add_argument('--num_messages',type=int,default=100,help='Number of messages to publish.')
     parser.add_argument('--mqtt_bridge_hostname',default='localhost',help='MQTT bridge hostname.')
     parser.add_argument('--mqtt_bridge_port',choices=(1883, 8883),default=1883,type=int,help='MQTT bridge port.')
 
@@ -112,7 +111,7 @@ def main():
     p.open()
 
     # Publish num_messages mesages to the MQTT bridge once per second.
-    for i in range(1, args.num_messages + 1):
+    while True:
         # Process network events.
         client.loop()
 
