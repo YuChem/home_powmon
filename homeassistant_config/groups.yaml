@@ -1,0 +1,35 @@
+climate:
+  name: Climate
+  view: yes
+  entities:
+    - sensor.bedroom_thermostat_temperature
+    - sensor.bedroom_thermostat_humidity
+    - sensor.living_room_thermostat_temperature
+    - sensor.living_room_thermostat_humidity
+    - sensor.upstairs_thermostat_temperature
+    - sensor.upstairs_thermostat_humidity
+    - group.climate
+
+lights:
+  name: Lights
+  view: yes
+  entities:
+    - light.1ad4b7
+    - light.3517d8
+    - light.352c3f
+    - light.3b9351
+    - switch.3253fe
+    - switch.3254a8
+
+power:
+  name: Power
+  view: yes
+  entities:
+    - sensor.main_line_voltage
+    - sensor.main_line_power
+    - sensor.mean_power_last_5min_mean
+    - sensor.mean_power_last_hour_mean
+    - sensor.mean_power_24h_mean
+    - history_graph.current_power
+    - history_graph.daily_power
+

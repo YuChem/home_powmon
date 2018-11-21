@@ -25,12 +25,12 @@ class TestStringMethods(unittest.TestCase):
     def test_read_W(self):
         p = Pzem_004()
         p.send = MagicMock(return_value=b'\xA2\x08\x98\x00\x00\x00\x42')
-        self.assertEqual(p.read_parameter('W'), 2200)
+        self.assertEqual(p.read_parameter('KW'), 2.2)
 
     def test_read_Wh(self):
         p = Pzem_004()
         p.send = MagicMock(return_value=b'\xA3\x01\x86\x9F\x00\x00\xC9')
-        self.assertEqual(p.read_parameter('Wh'), 99999)
+        self.assertEqual(p.read_parameter('KWh'), 99.999)
 
     def test_real_all(self):
         #TODO: this one is a composite of others

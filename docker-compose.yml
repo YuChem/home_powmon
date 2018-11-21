@@ -1,0 +1,25 @@
+version: '3'
+services:
+  mosquitto:
+    build:
+      context: .
+      dockerfile: Dockerfile-mqtt
+
+  homeassistant:
+    image: homeassistant/raspberrypi2-homeassistant
+    depends_on: mosquitto
+    ports:
+      - "8123:8123"
+    volumes:
+      - ./homeassistant_config:/config
+#    restart: always
+#    network_mode: host
+
+  powmon:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    depends_on: mosquitto
+    devices:
+      - /dev/ttyUSB0:/dev/ttyUSB0
+

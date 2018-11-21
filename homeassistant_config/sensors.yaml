@@ -1,0 +1,45 @@
+#  - platform: mqtt
+#    name: Main Line
+#    icon: mdi:power-plug
+#    platform: mqtt
+#    state_topic: "/devices/pzem/state"
+#    value_template: "{{ value_json }}"
+#    json_attributes:
+#      - V
+#      - A
+#     - W
+- platform: mqtt
+  name: Main Line power
+  unit_of_measurement: KW
+  icon: mdi:gauge
+  platform: mqtt
+  state_topic: "/devices/pzem/state"
+  value_template: "{{ value_json.KW }}"
+
+- platform: mqtt
+  name: Main Line voltage
+  unit_of_measurement: V
+  icon: mdi:gauge
+  platform: mqtt
+  state_topic: "/devices/pzem/state"
+  value_template: "{{ value_json.V }}"
+
+- platform: statistics
+  name: Mean Power last 5min
+  entity_id: sensor.main_line_power
+  sampling_size: 10
+  max_age:
+      minutes: 5
+
+  name: Mean Power last hour
+  entity_id: sensor.main_line_power
+  sampling_size: 120
+  max_age:
+      minutes: 60
+
+  name: Mean Power 24h
+  entity_id: sensor.main_line_power
+  sampling_size: 2880
+  max_age:
+      hours: 24
+
