@@ -8,5 +8,5 @@ RUN pip install -r requirements.txt
 
 RUN python -m unittest tests/*
 
-CMD ["python", "powmon_local.py","--device_id","pzem","--mqtt_bridge_hostname","mosquitto"]
+CMD ["python","-u","powmon_local.py","--device_id","pzem","--mqtt_bridge_hostname","mosquitto"]
 
