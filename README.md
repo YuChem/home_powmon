@@ -24,7 +24,7 @@ checkout this repo
     
 build docker images
 
-    sudo apt-get -y install python3-pip
+    sudo apt-get -y install python3-pip libffi-dev libssl-dev
     sudo pip3 install docker-compose
     
 start system
